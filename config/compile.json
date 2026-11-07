@@ -1,0 +1,9 @@
+{
+    "standalone": [
+        "svision/js/platform/vector/atari/avg.js",
+        "svision/js/platform/vector/atari/dvg.js",
+        "playfield.js",
+        "game.js",
+        "gameWorker.js"
+    ]
+}

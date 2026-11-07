@@ -1,0 +1,10 @@
+<?php
+
+  // public name of the game (internal project name is "asteroids"; the
+  // public name/domain is still undecided, see ZADANI.md chap. 10)
+  $appPublicName = 'ASTEROIDS';
+
+  $dbHostname = 'localhost';
+  $dbName = 'asteroids';
+  $dbUser = 'your-user-name';
+  $dbPassword = 'your-password';
