@@ -13,7 +13,7 @@
     'Please enable JavaScript to start the game.</p>'.
     '<p><a href="about">More about Asteroids and this remake</a></p>';
   $appOpenGraph = [
-    'image' => 'images/app-icon-512x512.png',
+    'image' => 'images/poster.png',
   ];
   $appJsonLd = [
     'genre' => 'Shoot \'em up',
