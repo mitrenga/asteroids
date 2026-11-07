@@ -1,0 +1,5 @@
+{
+  "screen": {"width": 1024, "height": 768},
+  "dvg": {"width": 1024, "height": 768, "yOffset": 128},
+  "tick": {"nmiPerFrame": 4, "nmiHz": 246.09375}
+}

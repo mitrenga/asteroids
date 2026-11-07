@@ -1,0 +1,249 @@
+{
+ "note": "Game tables of Asteroids rev 4 in the ROM set (sources/docs/disasm_notes.md; VEC:/MAC: labels of the Atari sources, dis $addr = McFadden's rev 4 listing verified against the ROM). The ROM files and load addresses are those of rom2vectors.spec.json.",
+ "tables": {
+  "sin": {
+   "address": "0x57b9",
+   "note": "VEC:SINCOS (dis ThrustTbl): 127 * sin(n/256 * 2 pi) for n = 0..64, the first quadrant; the thrust and the shots take cos/sin of the 8-bit angle from it (notes 2.4, 4.2)",
+   "values": [
+    0,
+    3,
+    6,
+    9,
+    12,
+    16,
+    19,
+    22,
+    25,
+    28,
+    31,
+    34,
+    37,
+    40,
+    43,
+    46,
+    49,
+    51,
+    54,
+    57,
+    60,
+    63,
+    65,
+    68,
+    71,
+    73,
+    76,
+    78,
+    81,
+    83,
+    85,
+    88,
+    90,
+    92,
+    94,
+    96,
+    98,
+    100,
+    102,
+    104,
+    106,
+    107,
+    109,
+    111,
+    112,
+    113,
+    115,
+    116,
+    117,
+    118,
+    120,
+    121,
+    122,
+    122,
+    123,
+    124,
+    125,
+    125,
+    126,
+    126,
+    126,
+    127,
+    127,
+    127,
+    127
+   ]
+  },
+  "rockPoints": {
+   "address": "0x7659",
+   "note": "MAC:SPLIT 99$ (dis AstPointsTbl): BCD points x 10 for the small / medium / large rock = 100 / 50 / 20 (notes 5.3)",
+   "values": [
+    16,
+    5,
+    2
+   ]
+  },
+  "saucerYSpeed": {
+   "address": "0x6cd1",
+   "note": "MAC:EFIRE 99$ (dis ScrYSpeedTbl): the saucer's Y velocity every 128 frames, by RAND & 3 (notes 6.2)",
+   "values": [
+    -16,
+    0,
+    0,
+    16
+   ]
+  },
+  "shotAngle": {
+   "address": "0x772f",
+   "note": "MAC:ATANA (dis ShotAngleTbl): arctan of a 4-bit ratio in 8-bit angle units, $20 = 45 degrees (notes 6.2)",
+   "values": [
+    0,
+    2,
+    5,
+    7,
+    10,
+    12,
+    15,
+    17,
+    19,
+    21,
+    23,
+    25,
+    26,
+    28,
+    29,
+    31
+   ]
+  },
+  "textPositions": {
+   "address": "0x7871",
+   "note": "MSG:VGMSGS (dis TextPosTbl): 11 x (X/4, Y/4) of the messages 0..10 — the lower left of the first glyph (notes 9.3)",
+   "values": [
+    100,
+    182,
+    100,
+    182,
+    12,
+    170,
+    12,
+    162,
+    12,
+    154,
+    12,
+    146,
+    100,
+    198,
+    100,
+    157,
+    80,
+    57,
+    80,
+    57,
+    80,
+    57
+   ]
+  },
+  "pieceDirections": {
+   "address": "0x50ec",
+   "note": "VEC:EXPDIR: 6 x (dx, dy) of the pieces of the exploding ship — the starting offset /16 and the velocity /256 a frame (notes 8)",
+   "values": [
+    -40,
+    30,
+    50,
+    -20,
+    0,
+    -60,
+    60,
+    20,
+    10,
+    70,
+    -40,
+    -40
+   ]
+  },
+  "messageOffsets": {
+   "address": "0x571e",
+   "note": "VEC:L0 (dis EnglishTextTbl): the offsets of the 11 English messages from L0, packed 3 characters in 2 bytes (ASCIN)",
+   "values": [
+    11,
+    19,
+    25,
+    47,
+    65,
+    85,
+    111,
+    119,
+    125,
+    135,
+    145
+   ]
+  }
+ },
+ "messages": [
+  {
+   "index": 0,
+   "text": "HIGH SCORES",
+   "x": 400,
+   "y": 728
+  },
+  {
+   "index": 1,
+   "text": "PLAYER ",
+   "x": 400,
+   "y": 728
+  },
+  {
+   "index": 2,
+   "text": "YOUR SCORE IS ONE OF THE TEN BEST",
+   "x": 48,
+   "y": 680
+  },
+  {
+   "index": 3,
+   "text": "PLEASE ENTER YOUR INITIALS",
+   "x": 48,
+   "y": 648
+  },
+  {
+   "index": 4,
+   "text": "PUSH ROTATE TO SELECT LETTER",
+   "x": 48,
+   "y": 616
+  },
+  {
+   "index": 5,
+   "text": "PUSH HYPERSPACE WHEN LETTER IS CORRECT",
+   "x": 48,
+   "y": 584
+  },
+  {
+   "index": 6,
+   "text": "PUSH START",
+   "x": 400,
+   "y": 792
+  },
+  {
+   "index": 7,
+   "text": "GAME OVER",
+   "x": 400,
+   "y": 628
+  },
+  {
+   "index": 8,
+   "text": "1 COIN 2 PLAYS",
+   "x": 320,
+   "y": 228
+  },
+  {
+   "index": 9,
+   "text": "1 COIN 1 PLAY",
+   "x": 320,
+   "y": 228
+  },
+  {
+   "index": 10,
+   "text": "2 COINS 1 PLAY",
+   "x": 320,
+   "y": 228
+  }
+ ],
+ "messagesNote": "The 11 English messages (VEC:L0) with their positions from MSG:VGMSGS (notes 9.3), drawn at global scale $10 by VGMSG; message 1 is followed by the player number."
+}

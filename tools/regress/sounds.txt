@@ -1,0 +1,24 @@
+# saucer
+175 thumpLow
+227 thumpHigh
+278 thumpLow
+328 thumpHigh
+377 thumpLow
+426 thumpHigh
+474 thumpLow
+521 thumpHigh
+567 thumpLow
+613 thumpHigh
+632 saucerLarge
+636 saucerFire
+658 thumpLow
+660 fire
+676 saucerFire
+702 thumpHigh
+716 saucerFire
+718 explosion3F saucerOff
+# death
+132 thrustOn
+175 thumpLow
+227 thumpHigh
+238 explosion3F thrustOff

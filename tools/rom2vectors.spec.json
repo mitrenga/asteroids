@@ -1,0 +1,32 @@
+{
+ "note": "The vector ROM of Asteroids rev 4 (035127-02, CPU $5000-$57FF = DVG word $800-$BFF). Addresses from sources/docs/disasm_notes.md 2.4 (VEC: labels of A35127.XX, verified in McFadden's listing).",
+ "romDir": "../sources/rom/asteroid",
+ "roms": [
+  {"file": "035127-02.np3",  "address": "5000", "note": "vector ROM: shapes, font, messages, sine"},
+  {"file": "035145-04e.ef2", "address": "6800", "note": "program ROM rev 4"},
+  {"file": "035144-04e.h2",  "address": "7000"},
+  {"file": "035143-02.j2",   "address": "7800"}
+ ],
+ "dvgBase": "4000",
+ "shapes": {
+  "output": "../data/shapes.json",
+  "rocks":       {"table": "51DE", "count": 4,  "note": "VEC:ROCKS — JSRL table to ROCK1..4; PICTUR: JSRL ROCKS[(OBJ & $18) >> 3]; global scale 0 / F / E for the large / medium / small rock"},
+  "saucer":      {"jsrl": "5250",              "note": "VEC:SAUCER — a JSRL to its own 10$; global scale F (large) / E (small)"},
+  "ships":       {"wordTable": "526E", "count": 17, "note": "VEC:SHIPS — 17 pictures 0..90 degrees every 5.625 (index = angle/4 after folding), each 5 vectors + RTSL, then the flame (2 vectors + RTSL); the game copies the vectors into RAM with the sign bits of X and/or Y flipped (dis UpdateShipDraw $750b, DrawShip $6ad3); global scale E"},
+  "livesIcon":   {"address": "54DA",           "note": "VEC:SHIP17 — the ship of the reserve lives, nose up, intensity 7; the trailing dark VCTR 80,24 leaves the beam 64 to the right for the next icon; drawn at global scale E from (160, 852)"},
+  "shipPieces":  {"address": "50E0", "count": 6, "note": "VEC:EXPSHP — the six pieces of the exploding ship, one SVEC each at intensity 12 (SHPEXP, notes 8)"},
+  "explosions":  {"table": "50F8", "count": 4,  "note": "VEC:EXPPIC — JSRL table to EXP10, EXP12, EXP14, EXP16: ten dots at intensity 7 in four sizes; PICTUR: EXPPIC[(OBJ & $0C) >> 2] at global scale (OBJ & $F0) + $10"},
+  "copyright":   {"address": "50A4",           "note": "VEC:ASTMSG rev 2/4 (dis VecCredits): LABS 400,128 scale 0, then the glyphs of '© 1979 ATARI INC' — a subroutine with its own position, so its segments are absolute"},
+  "testPattern": {"address": "5000",           "note": "VEC:TEST1 — the self-test frame 0..1023 x 128..895, the diagonals and the intensity wedge; absolute"}
+ },
+ "font": {
+  "output": "../data/font.json",
+  "table": "56D4",
+  "codes": [" ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+  "cellWidth": 8,
+  "cellHeight": 12,
+  "advance": 12,
+  "note": "VECAN CHAR.x through the JSRL table VGMSGA (dis CharPtrTbl $56D4): 37 glyphs, SVEC strokes on an 8 x 12 cell at global scale 0, every glyph leaves the beam 12 to the right; texts are drawn at scale $10 (x2: 16 x 24, advance 24), $00 and $20"
+ }
+}

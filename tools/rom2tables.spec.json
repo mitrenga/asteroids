@@ -1,0 +1,21 @@
+{
+ "note": "Game tables of Asteroids rev 4 in the ROM set (sources/docs/disasm_notes.md; VEC:/MAC: labels of the Atari sources, dis $addr = McFadden's rev 4 listing verified against the ROM). The ROM files and load addresses are those of rom2vectors.spec.json.",
+ "romDir": "../sources/rom/asteroid",
+ "roms": [
+  {"file": "035127-02.np3",  "address": "5000"},
+  {"file": "035145-04e.ef2", "address": "6800"},
+  {"file": "035144-04e.h2",  "address": "7000"},
+  {"file": "035143-02.j2",   "address": "7800"}
+ ],
+ "output": "../data/tables.json",
+ "tables": {
+  "sin":            {"address": "57B9", "type": "uint8", "count": 65, "note": "VEC:SINCOS (dis ThrustTbl): 127 * sin(n/256 * 2 pi) for n = 0..64, the first quadrant; the thrust and the shots take cos/sin of the 8-bit angle from it (notes 2.4, 4.2)"},
+  "rockPoints":     {"address": "7659", "type": "uint8", "count": 3,  "note": "MAC:SPLIT 99$ (dis AstPointsTbl): BCD points x 10 for the small / medium / large rock = 100 / 50 / 20 (notes 5.3)"},
+  "saucerYSpeed":   {"address": "6CD1", "type": "int8",  "count": 4,  "note": "MAC:EFIRE 99$ (dis ScrYSpeedTbl): the saucer's Y velocity every 128 frames, by RAND & 3 (notes 6.2)"},
+  "shotAngle":      {"address": "772F", "type": "uint8", "count": 16, "note": "MAC:ATANA (dis ShotAngleTbl): arctan of a 4-bit ratio in 8-bit angle units, $20 = 45 degrees (notes 6.2)"},
+  "textPositions":  {"address": "7871", "type": "uint8", "count": 22, "note": "MSG:VGMSGS (dis TextPosTbl): 11 x (X/4, Y/4) of the messages 0..10 — the lower left of the first glyph (notes 9.3)"},
+  "pieceDirections":{"address": "50EC", "type": "int8",  "count": 12, "note": "VEC:EXPDIR: 6 x (dx, dy) of the pieces of the exploding ship — the starting offset /16 and the velocity /256 a frame (notes 8)"},
+  "messageOffsets": {"address": "571E", "type": "uint8", "count": 11, "note": "VEC:L0 (dis EnglishTextTbl): the offsets of the 11 English messages from L0, packed 3 characters in 2 bytes (ASCIN)"},
+  "messagesPacked": {"address": "5729", "type": "uint8", "count": 144, "note": "the packed messages 0..10: AAAAABBB BBCCCCCD — 5-bit codes 0 = end, 1 = blank, 2..4 = '0'..'2', 5..30 = A..Z, D = end of string"}
+ }
+}
