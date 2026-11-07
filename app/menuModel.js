@@ -9,8 +9,6 @@ const { VectorNameEntity } = await import('./svision/js/platform/vector/vectorNa
 const { VectorHallOfFameEntity } = await import('./svision/js/platform/vector/vectorHallOfFameEntity.js?ver='+window.srcVersion);
 const { VectorNoticeEntity } = await import('./svision/js/platform/vector/vectorNoticeEntity.js?ver='+window.srcVersion);
 const { VectorDevModeEntity } = await import('./svision/js/platform/vector/vectorDevModeEntity.js?ver='+window.srcVersion);
-const { VectorFontCatalogueEntity } = await import('./svision/js/platform/vector/vectorFontCatalogueEntity.js?ver='+window.srcVersion);
-const { VectorFont4x6 } = await import('./svision/js/platform/vector/vectorFont4x6.js?ver='+window.srcVersion);
 // begin code
 
 /**
@@ -85,8 +83,7 @@ export class MenuModel extends AbstractModel {
       {t1: 'HALL OF FAME', event: {id: 'showHallOfFame'}},
       {t1: 'SOUNDS', event: {id: 'setSounds'}},
       {t1: 'SETTINGS', event: {id: 'setSettings'}},
-      {t1: 'ABOUT GAME', event: {id: 'showAbout'}},
-      {t1: 'FONT GLYPHS', event: {id: 'showFontGlyphs'}}   // TEMPORARY: font work (AtariVectorFont lower case), remove when done
+      {t1: 'ABOUT GAME', event: {id: 'showAbout'}}
     ];
     this.color = '#ffffff';           // the monitor is black and white, no overlay
     this.titleColor = MenuModel.TITLE_COLOR;
@@ -324,13 +321,6 @@ export class MenuModel extends AbstractModel {
       case 'showAbout':
         // one menu row (and a unit) lower than the other notices
         this.openNotice('ABOUT GAME', ['ASTEROIDS', 'ORIGINAL BY ATARI 1979', 'REMAKE ON SVISION', 'VECTOR PLATFORM'].concat(this.app.copyright.split(', ')), false, {offsetY: 54});
-        return true;
-
-      case 'showFontGlyphs':
-        // TEMPORARY (font work): printable ASCII and what is above it in the library's 4x6 font and in
-        // the menu font (AtariVectorFont) side by side, glyph - glyph, down the columns; the box is sized by
-        // the character count (97 characters = 9 columns of 12, 918 wide), the box nearly the whole screen
-        this.desktopEntity.addModalEntity(new VectorFontCatalogueEntity(this.desktopEntity, 16, 24, this.desktopWidth-32, [new VectorFont4x6(), this.app.fonts.vector], this.color));
         return true;
 
       case 'keyRelease':
