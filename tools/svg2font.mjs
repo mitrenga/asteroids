@@ -10,9 +10,11 @@
  * (the `AbstractVectorFont` convention), plus the glyph width, so the font
  * class can draw proportionally.
  *
- * Cubic Béziers are flattened to a handful of segments (more where the curve
- * bends more); collinear points are dropped and the result rounded to 1/100
- * of a unit. Parts are kept separate so the slice gaps stay open.
+ * Cubic Béziers become straight lines only: a curve is cut into equal
+ * parameter steps, one segment per 45° of its turning angle (the angle
+ * between its start and end tangents), so a quarter circle is two segments
+ * and a gentler bend one; collinear points are dropped and the result rounded
+ * to 1/100 of a unit. Parts are kept separate so the slice gaps stay open.
  *
  *   node tools/svg2font.mjs            writes app/slicedFontGlyphs.js
  *   node tools/svg2font.mjs --check    only reports the glyph widths
@@ -26,7 +28,8 @@ const SRC = path.join(ROOT, 'sources/fonts/sliced-gaming-font-outlines.svg');
 const OUT = path.join(ROOT, 'app/slicedFontGlyphs.js');
 const HEIGHT = 12;           // cap height in grid units
 const SIDE_BEARING = 0;      // glyphs are trimmed to their ink; the font adds the gap
-const FLATTEN_TOLERANCE = 0.06; // grid units
+const SIMPLIFY_EPS = 0.06;   // grid units: nearer points and flatter bends are dropped
+const SEGMENT_ANGLE = Math.PI/4; // one straight segment per 45° of curve — a quarter circle is two
 
 /** Parse one SVG path `d` (absolute M/L/C/Z only) into closed polylines. */
 function parsePath(d) {
@@ -49,20 +52,19 @@ function parsePath(d) {
   return polys;
 }
 
-/** Recursive subdivision of a cubic into the polyline (in SVG units; the tolerance is scaled by the caller). */
-let tolSvg = 1;
-function flattenCubic(poly, x0, y0, x1, y1, x2, y2, x3, y3, depth = 0) {
-  // flatness: distance of the control points from the chord
-  const dx = x3 - x0, dy = y3 - y0, len = Math.hypot(dx, dy) || 1;
-  const d1 = Math.abs((x1 - x0) * dy - (y1 - y0) * dx) / len;
-  const d2 = Math.abs((x2 - x0) * dy - (y2 - y0) * dx) / len;
-  if ((d1 <= tolSvg && d2 <= tolSvg) || depth >= 6) { poly.push([x3, y3]); return; }
-  const x01 = (x0 + x1) / 2, y01 = (y0 + y1) / 2, x12 = (x1 + x2) / 2, y12 = (y1 + y2) / 2;
-  const x23 = (x2 + x3) / 2, y23 = (y2 + y3) / 2;
-  const x012 = (x01 + x12) / 2, y012 = (y01 + y12) / 2, x123 = (x12 + x23) / 2, y123 = (y12 + y23) / 2;
-  const xm = (x012 + x123) / 2, ym = (y012 + y123) / 2;
-  flattenCubic(poly, x0, y0, x01, y01, x012, y012, xm, ym, depth + 1);
-  flattenCubic(poly, xm, ym, x123, y123, x23, y23, x3, y3, depth + 1);
+/** Cuts a cubic into straight segments, one per 45° of its turning angle (at least one). */
+function flattenCubic(poly, x0, y0, x1, y1, x2, y2, x3, y3) {
+  // tangents at the ends (falling back to the chord when a control point coincides)
+  const tx0 = (x1 - x0) || (x2 - x0) || (x3 - x0), ty0 = (y1 - y0) || (y2 - y0) || (y3 - y0);
+  const tx1 = (x3 - x2) || (x3 - x1) || (x3 - x0), ty1 = (y3 - y2) || (y3 - y1) || (y3 - y0);
+  const dot = tx0 * tx1 + ty0 * ty1, cross = tx0 * ty1 - ty0 * tx1;
+  const angle = Math.abs(Math.atan2(cross, dot));
+  const n = Math.max(1, Math.round(angle / SEGMENT_ANGLE));
+  for (let i = 1; i <= n; i++) {
+    const t = i / n, u = 1 - t;
+    poly.push([u * u * u * x0 + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * x3,
+               u * u * u * y0 + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * y3]);
+  }
 }
 
 /** Drop repeated and collinear points of a closed polyline. */
@@ -93,13 +95,12 @@ let minTop = 0, maxBottom = HEIGHT;
 for (const row of svg.matchAll(/<g id="row\d" data-top="([\d.]+)" data-base="([\d.]+)">([\s\S]*?)<\/g>/g)) {
   const top = parseFloat(row[1]), base = parseFloat(row[2]);
   const scale = HEIGHT / (base - top);
-  tolSvg = FLATTEN_TOLERANCE / scale;
   for (const m of row[3].matchAll(/<path id="([A-Z])" d="([^"]+)"\/>/g)) {
     const ch = m[1];
     const g = glyphs[ch] ||= {strokes: []};
     for (const poly of parsePath(m[2])) {
       const scaled = poly.map(([x, y]) => [x * scale, (y - top) * scale]);
-      const s = simplify(scaled, FLATTEN_TOLERANCE);
+      const s = simplify(scaled, SIMPLIFY_EPS);
       if (s.length > 2) g.strokes.push(s);
     }
   }
