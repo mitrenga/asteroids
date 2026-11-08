@@ -1,6 +1,7 @@
 const { Version } = await import('./version.js?ver='+window.srcVersion);
 const { AbstractApp } = await import('./svision/js/abstractApp.js?ver='+window.srcVersion);
 const { AtariVectorFont } = await import('./svision/js/platform/vector/atari/atariVectorFont.js?ver='+window.srcVersion);
+const { SlicedFont } = await import('./slicedFont.js?ver='+window.srcVersion);
 const { BootModel } = await import('./bootModel.js?ver='+window.srcVersion);
 const { MenuModel } = await import('./menuModel.js?ver='+window.srcVersion);
 const { MainModel } = await import('./mainModel.js?ver='+window.srcVersion);
@@ -44,9 +45,11 @@ export class GameApp extends AbstractApp {
     this.muted = {sounds: false};      // no music bus: the original has none
 
     // the vector font of the menu and the dialogs: the glyphs of Atari's vector ROMs plus the
-    // remakes' punctuation and lower case, one table shared with Battlezone (R-063)
+    // remakes' punctuation and lower case, one table shared with Battlezone (R-063);
+    // the title over the menu is in the game's own sliced font (modelled on a Vecteezy font, README § Licence)
     this.fonts = {
-      vector: new AtariVectorFont()
+      vector: new AtariVectorFont(),
+      title: new SlicedFont()
     };
 
     // the panel of the cabinet (ZADANI chap. 5): rotate left/right, thrust,

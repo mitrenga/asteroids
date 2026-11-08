@@ -50,8 +50,8 @@ export class MenuModel extends AbstractModel {
   static get CREDIT() { return {text: 'REMAKE BY L. MITRENGA\nCC BY-NC-SA 4.0', size: 21, width: 54, x: 12, y: 64}; }
 
   /**
-   * The title as it stands over the menu: the text in the menu font
-   * (AS-M3 may put the ROM's glyphs here) — BootModel makes the same one
+   * The title as it stands over the menu: the text in the title font
+   * (the game's own SlicedFont, `app.fonts.title`) — BootModel makes the same one
    * in the middle of the screen and glides it into this place, so the two
    * screens meet without a jump.
    * @param {AbstractEntity} parentEntity - The desktop.
@@ -61,7 +61,7 @@ export class MenuModel extends AbstractModel {
    */
   static newTitleEntity(parentEntity, y, title) {
     var model = parentEntity.model;
-    return new VectorTextEntity(parentEntity, 0, y, model.desktopWidth, MenuModel.TITLE_SIZE, MenuModel.TITLE_COLOR, false, title, {font: model.app.fonts.vector, size: MenuModel.TITLE_SIZE, spacing: 1, align: 'center'});
+    return new VectorTextEntity(parentEntity, 0, y, model.desktopWidth, MenuModel.TITLE_SIZE, MenuModel.TITLE_COLOR, false, title, {font: model.app.fonts.title, size: MenuModel.TITLE_SIZE, spacing: 1, align: 'center'});
   } // newTitleEntity
 
   /**

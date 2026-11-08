@@ -57,6 +57,7 @@ import path from 'node:path';
 
 const { headlessVectorApp } = await import('../app/svision/tools/headlessApp.mjs');
 const { AtariVectorFont } = await import('../app/svision/js/platform/vector/atari/atariVectorFont.js');
+const { SlicedFont } = await import('../app/slicedFont.js');
 const { Playfield } = await import('../app/playfield.js');
 const { appPlatform } = await import('../app/appPlatform.js');
 const { MenuModel } = await import('../app/menuModel.js');
@@ -103,7 +104,7 @@ const SCRIPTS = {
 
 /**
  * The application as GameApp sets it up, minus the browser; the font of the
- * menu is AtariVectorFont as in the game.
+ * menu is AtariVectorFont and the title the game's SlicedFont as in the game.
  */
 function makeApp() {
   return headlessVectorApp(appPlatform(), 1024, 768, {
@@ -114,7 +115,7 @@ function makeApp() {
     hiScore: 12340,
     devModeName: false,
     globalData: data.global,
-    fonts: {vector: new AtariVectorFont()},
+    fonts: {vector: new AtariVectorFont(), title: new SlicedFont()},
     gameData: () => ({shapes: data.shapes, font: data.font, tables: data.tables}),
     gameSeed: () => 0xC0DE
   });

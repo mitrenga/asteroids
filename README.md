@@ -36,3 +36,9 @@ from the ROM by `tools/rom2vectors.mjs` and `tools/rom2tables.mjs`;
 ## Licence
 
 CC BY-NC-SA 4.0 — see [LICENSE.md](LICENSE.md).
+
+The vector font of the ASTEROIDS title (`app/slicedFont.js`) was modelled
+on the *Yellow and Black Modern Sports Sliced Gaming Font* by Patrick Santos
+from vecteezy.com
+(<https://www.vecteezy.com/vector-art/7325193-yellow-and-black-modern-sports-sliced-gaming-font>),
+used under the Vecteezy Free License.
